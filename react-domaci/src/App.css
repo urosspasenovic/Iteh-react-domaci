@@ -1,7 +1,7 @@
 .navBar {
   display: flex;
   flex-direction: row;
-  background-color: rgb(235, 28, 28);
+  background-color: rgb(226, 58, 58);
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: rgb(175, 175, 175);
@@ -10,7 +10,15 @@
   padding-left: 25px;
   font-size: large;
 }
-
+body{
+  background-image: url("./Images/Subsrcibe2.png");
+  background-size: 100% 100%;
+  background-attachment: fixed;
+}
+.card-text{
+  font-weight: bold;
+  color:rgb(255, 238, 2);
+}
 .cart-items {
   display: flex;
   flex-direction: row;
@@ -33,7 +41,6 @@
 .all-products {
   display: flex;
   margin: 20px;
-  
 }
 
 .card {
@@ -42,6 +49,7 @@
   border-color: rgb(211, 211, 211);
   border-radius: 10px;
   max-width: 200px;
+  padding: 1rem;
 }
 
 .card-img-top {
