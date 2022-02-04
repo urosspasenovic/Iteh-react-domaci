@@ -9,21 +9,23 @@ import Disney from "./Images/Disney+.png";
 import AppleMusic from "./Images/Apple_Music.png";
 import AmazonMusic from "./Images/AmazonMusic.png";
 import { useState } from "react";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import Subscription from "./Components/MySubscriptions";
 
 function App() {
   const [money, setMoney] = useState(50);
-  const products = [
+  const [mySubsctiptions, setMySubscriptions] = useState([]);
+  const [products] = useState([
     {
       id: 1,
       title: "Netflix",
       description:
         "Netflix, Inc. is an American subscription streaming service and production company. Launched on August 29, 1997, it offers a library of films "
         + " and television series through distribution deals as well as its own productions, known as Netflix Originals."
-        + "As of December 31, 2021, Netflix had over 221.8 million subscribers worldwide, including 74.0 million in Europe."
-        +"          .",
+        + "As of December 31, 2021, Netflix had over 221.8 million subscribers worldwide, including 74.0 million in Europe.",
       picture: NetflixImg,
         price: 20,
-
+        vecDodat: 0,
     },
     {
       id: 2,
@@ -34,6 +36,7 @@ function App() {
         + "Spotify offers digital copyright restricted recorded music and podcasts, including more than 70 million songs.",
         picture: SpotifyImg,
         price: 12,
+        vecDodat: 0,
     },
     {
       id: 3,
@@ -44,6 +47,7 @@ function App() {
         +"Created in Paris, Deezer currently has 73 million licensed tracks in its library, with over 30,000 radio channels, 100 million playlists, 16 million monthly active users",
       picture: DeezerImg,
         price: 9,
+        vecDodat: 0,
     },
     {
     id: 4,
@@ -53,6 +57,7 @@ function App() {
       + " as well as access to premium YouTube Originals programming produced in collaboration with the site's creators, downloading videos and background playback of videos.", 
       picture: YouTubeImg,
       price: 4,
+      vecDodat: 0,
     },
     {
       id: 5,
@@ -63,6 +68,7 @@ function App() {
         +" and brands such as Disney, Marvel, Star Wars, National Geographic.",
         picture: Disney,
         price: 27,
+        vecDodat: 0,
       },
       {
         id: 6,
@@ -73,6 +79,7 @@ function App() {
           +" The service launched in 2015.",
           picture: AppleMusic,
           price: 14,
+          vecDodat: 0,
         },
         {
           id: 7,
@@ -83,14 +90,26 @@ function App() {
             +"(EMI, Universal, Warner, and Sony BMG), as well as many independents. ",
             picture: AmazonMusic,
             price: 19,
+            vecDodat: 0,
           },
     
-  ];
-  function addProduct(title, price) {
+  ]);
+  function refreshFavorites() {
+    let newProducts = products.filter((s) => s.vecDodat > 0);
+    setMySubscriptions(newProducts); 
+    console.log(mySubsctiptions);
+  }
+  function addProduct(title, price, id) {
 
     if(money >= price){
-      setMoney(money - price);
-      console.log("Dodat je proizvod: " + title);
+      products.forEach((p) => {
+        if(p.id === id && p.vecDodat ===0) {
+          p.vecDodat = 1;
+          setMoney(money - price);  
+          refreshFavorites();
+        }
+
+    });
     }
      else{
       alert("Nemate dovoljno novca za pretplatu. Imate "+ money + " evra u novcaniku, a potrebno Vam je "+ price);
@@ -99,11 +118,18 @@ function App() {
      console.log("Ostalo Vam je: " + money);
   }
   return (
-    <div className="App">
+    <BrowserRouter className="App">
       <NavBar money={money}></NavBar>
-      <Products products={products} onAdd={addProduct} />
-    </div>
+      <Routes>
+        <Route 
+          path = "/"
+          element={<Products products={products} onAdd={addProduct} />}
+      />
+      <Route path="/cart" element={<Subscription products={mySubsctiptions} />} />
+    </Routes>
+    </BrowserRouter>
   );
+ 
 }
 
 export default App;
