@@ -94,7 +94,7 @@ function App() {
           },
     
   ]);
-  function refreshFavorites() {
+  function refreshMySubscriptions() {
     let newProducts = products.filter((s) => s.vecDodat > 0);
     setMySubscriptions(newProducts); 
     console.log(mySubsctiptions);
@@ -106,7 +106,7 @@ function App() {
         if(p.id === id && p.vecDodat ===0) {
           p.vecDodat = 1;
           setMoney(money - price);  
-          refreshFavorites();
+          refreshMySubscriptions();
         }
 
     });
@@ -117,6 +117,16 @@ function App() {
      } 
      console.log("Ostalo Vam je: " + money);
   }
+  function removeSubscription(id, price){
+    
+    mySubsctiptions.forEach((ms) => {
+      if(ms.id === id) {    
+        ms.vecDodat = 0;
+        setMoney(money + price);
+      }
+    });
+    refreshMySubscriptions();
+  }
   return (
     <BrowserRouter className="App">
       <NavBar money={money}></NavBar>
@@ -125,7 +135,7 @@ function App() {
           path = "/"
           element={<Products products={products} onAdd={addProduct} />}
       />
-      <Route path="/cart" element={<Subscription products={mySubsctiptions} />} />
+      <Route path="/cart" element={<Subscription products={mySubsctiptions} removeSubscription = {removeSubscription} />} />
     </Routes>
     </BrowserRouter>
   );
